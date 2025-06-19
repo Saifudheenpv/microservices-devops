@@ -1,0 +1,12 @@
+{
+  "name": "product-service",
+  "version": "1.0.0",
+  "description": "Product microservice for DevOps project",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
