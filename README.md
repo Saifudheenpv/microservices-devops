@@ -1,6 +1,6 @@
+HEAD
 Microservices DevOps Project
-This project demonstrates a complete DevOps pipeline for a microservices-based web application using Node.js, Docker, Kubernetes, Jenkins, Terraform, and Prometheus/Grafana.
-Project Structure
+This project demonstrates a complete DevOps pipeline for a microservices-based web application using Node.js, Docker, Kubernetes, Jenkins, Terraform, and Prometheus/Grafana, Project Structure
 
 user-service/: Node.js microservice for user management.
 product-service/: Node.js microservice for product management.
@@ -25,3 +25,6 @@ Status
 Phase 1: Microservices and Docker setup completed.
 Phase 2: Version control and project structure in progress.
 
+
+# microservices-devops
+DevOps project with CI/CD, Docker, Kubernetes, and monitor 82bc4a829917c61bef710f9c15814932256f5204
