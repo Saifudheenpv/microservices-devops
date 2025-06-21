@@ -1,11 +1,13 @@
 pipeline {
     agent any
+
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/Saifudheenpv/microservices-devops.git'
+                git branch: 'main', url: 'https://github.com/Saifudheenpv/microservices-devops.git'
             }
         }
+
         stage('Build User Service') {
             steps {
                 dir('user-service') {
@@ -14,6 +16,7 @@ pipeline {
                 }
             }
         }
+
         stage('Build Product Service') {
             steps {
                 dir('product-service') {
@@ -22,18 +25,28 @@ pipeline {
                 }
             }
         }
+
         stage('Push User Service') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                    sh 'docker login -u $DOCKER_USER -p $DOCKER_PASS'
+                withCredentials([usernamePassword(
+                    credentialsId: 'docker-hub-credentials', 
+                    usernameVariable: 'DOCKER_USER', 
+                    passwordVariable: 'DOCKER_PASS'
+                )]) {
+                    sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
                     sh 'docker push saifudheenpv/user-service:latest'
                 }
             }
         }
+
         stage('Push Product Service') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                    sh 'docker login -u $DOCKER_USER -p $DOCKER_PASS'
+                withCredentials([usernamePassword(
+                    credentialsId: 'docker-hub-credentials', 
+                    usernameVariable: 'DOCKER_USER', 
+                    passwordVariable: 'DOCKER_PASS'
+                )]) {
+                    sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
                     sh 'docker push saifudheenpv/product-service:latest'
                 }
             }
