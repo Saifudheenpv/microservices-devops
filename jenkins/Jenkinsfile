@@ -6,6 +6,11 @@ pipeline {
         }
     }
 
+    environment {
+        USER_IMAGE = 'saifudheenpv/user-service:latest'
+        PRODUCT_IMAGE = 'saifudheenpv/product-service:latest'
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -17,7 +22,7 @@ pipeline {
             steps {
                 dir('user-service') {
                     sh 'npm install'
-                    sh 'docker build -t saifudheenpv/user-service:latest .'
+                    sh 'docker build -t $USER_IMAGE .'
                 }
             }
         }
@@ -26,25 +31,33 @@ pipeline {
             steps {
                 dir('product-service') {
                     sh 'npm install'
-                    sh 'docker build -t saifudheenpv/product-service:latest .'
+                    sh 'docker build -t $PRODUCT_IMAGE .'
                 }
             }
         }
 
         stage('Push User Service') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                withCredentials([usernamePassword(
+                    credentialsId: 'docker-hub-credentials',
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_PASS'
+                )]) {
                     sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
-                    sh 'docker push saifudheenpv/user-service:latest'
+                    sh 'docker push $USER_IMAGE'
                 }
             }
         }
 
         stage('Push Product Service') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                withCredentials([usernamePassword(
+                    credentialsId: 'docker-hub-credentials',
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_PASS'
+                )]) {
                     sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
-                    sh 'docker push saifudheenpv/product-service:latest'
+                    sh 'docker push $PRODUCT_IMAGE'
                 }
             }
         }
