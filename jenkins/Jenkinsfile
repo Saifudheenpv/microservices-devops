@@ -2,13 +2,13 @@ pipeline {
     agent {
         docker {
             image 'node:16-alpine'
-            args '-v /var/run/docker.sock:/var/run/docker.sock'
+            args '-v /var/run/docker.sock:/var/run/docker.sock --group-add <docker-group-id>'
         }
     }
     stages {
         stage('Setup') {
             steps {
-                sh 'apk add --no-cache docker-cli'
+                sh 'apk update && apk add --no-cache docker-cli'
             }
         }
         stage('Checkout') {
